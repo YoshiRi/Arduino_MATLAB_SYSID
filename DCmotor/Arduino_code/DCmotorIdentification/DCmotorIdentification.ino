@@ -4,7 +4,6 @@
 // confirm your arduino port and install header files  below
 
 #include <Encoder.h>
-#include <PID_v1.h>
 #include <Servo.h> 
 
 // encoder count per rotation 
@@ -15,7 +14,7 @@
 #define RAD_PER_COUNT 2.0*3.141592  / (double) COUNTS_PER_ROTATION
 
 #define STEP_TIME 1000 // 1sec
-#define FREQ 2 // hz
+#define FREQ 5 // hz
 #define OMEGA 2.0*3.141592*FREQ 
 
 Encoder myEnc(2, 3);
@@ -26,12 +25,6 @@ Servo myservoA;
 // initial values
 int SteerAngle = 90;
 
-//Define Variables we'll be connecting to
-double Setpoint, Input, Output;
-
-//Specify the links and initial tuning parameters
-double Kp=3000, Ki=0, Kd=0;
-PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 
 // DC motor .......
 const int 
@@ -45,7 +38,7 @@ long newPosition, dest = 0;
 long prevTime, currTime, cmdTime;
 long outputPWM = 0;
 long timecount=0;
-double Omega;
+double Omega,Input;
 
 void setup() {
   // Servo ......
@@ -59,11 +52,8 @@ void setup() {
   pinMode(DIR_B, OUTPUT);    // Direction pin on channel B
   cmdTime = millis();
   prevTime = millis();
-  Setpoint = 0.0f;
   oldPosition = myEnc.read();
-  //turn the PID on
-  myPID.SetOutputLimits (-255,255);
-  myPID.SetMode(AUTOMATIC);
+  Input = 0.0;
   
   //Serial.begin(9600);
   Serial.begin(38400);
@@ -84,6 +74,7 @@ void loop() {
   prevTime = currTime;
   oldPosition = newPosition;
 
+// ----------------------  Signal Generator ---------------------- //
   // for Square wave
   if(timecount < STEP_TIME ){
     outputPWM = 255;
@@ -96,6 +87,9 @@ void loop() {
 
   // Sin wave
   outputPWM = 255 * sin(OMEGA*float(timecount)/1000.0);
+
+// -------------------- End of Signal Generator ---------------------- //
+
 
   // Use arduino serial monitor to get these data
   double pose = (double)newPosition * RAD_PER_COUNT;
@@ -118,6 +112,11 @@ void loop() {
     digitalWrite(DIR_B, LOW);
     outputPWM = -outputPWM;
   }
+  //  ===============  Switch ==================== // 
+  // comment out the line below to run the robot 
   outputPWM = 0;
   analogWrite(PWM_B, outputPWM);     // Set the speed of the motor, 255 is the maximum value
+
+  // choose sampling frequency? 1000hz
+  delay(1);
 }
