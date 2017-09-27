@@ -22,9 +22,9 @@ end
 %%
 figure(11);
 plot(time,Omega);
-legend(' angular velocity [rad/s]')
+legend(' angular velocity [m/s]')
 xlabel('Time[ms]');
-ylabel('Speed[rad/s]');
+ylabel('Speed[m/s]');
 grid on;
 
 figure(2);
@@ -59,9 +59,9 @@ end
 %%
 figure(1);
 plot(time,Omega);
-legend(' angular velocity [rad/s]')
+legend(' angular velocity [m/s]')
 xlabel('Time[ms]');
-ylabel('Speed[rad/s]');
+ylabel('Speed[m/s]');
 grid on;
 
 figure(2);
