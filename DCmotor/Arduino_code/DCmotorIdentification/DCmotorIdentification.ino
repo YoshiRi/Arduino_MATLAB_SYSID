@@ -41,12 +41,12 @@ long timecount=0;
 double Omega,Input;
 
 void setup() {
-  // Servo ......
+  // Servo Motor for steering
   myservoA.attach(5);  //  Servo motor pin 5 
   myservoA.write(SteerAngle);
   delay(1000);
   
-  // DC motor .......
+  // DC motor for driving
   // Configure the B output
   pinMode(BRAKE_B, OUTPUT);  // Brake pin on channel B
   pinMode(DIR_B, OUTPUT);    // Direction pin on channel B

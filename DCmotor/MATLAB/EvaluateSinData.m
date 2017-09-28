@@ -20,7 +20,7 @@ for i = 1:Len
 end
 
 %%
-figure(11);
+figure(1);
 plot(time,Omega);
 legend(' angular velocity [m/s]')
 xlabel('Time[ms]');
